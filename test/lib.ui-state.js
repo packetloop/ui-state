@@ -15,8 +15,8 @@ describe('UI State', function () {
       })).to.equal('first=string');
 
       expect(urljson.encode({
-        x: '1', y: '2'
-      })).to.equal('x=1&y=2');
+        x: '1', y: 2
+      })).to.equal('x=1&y=\\2');
     });
 
 
@@ -131,25 +131,6 @@ describe('UI State', function () {
       }).to.throw('Maximum allowed object depth is 2');
 
     });
-
-
-    it('should throw on Number values', function () {
-
-      expect(function () {
-        return urljson.encode({
-          first: 1
-        });
-      }).to.throw('Numbers are not allowed');
-
-      expect(function () {
-        return urljson.encode({
-          first: {
-            second: 1
-          }
-        });
-      }).to.throw('Numbers are not allowed');
-
-    });
   });
 
 
@@ -245,6 +226,19 @@ describe('UI State', function () {
       });
     });
 
+
+    it('should handle numbers', function () {
+      expect(urljson.decode('first=\\1')).to.deep.equal({
+        first: 1
+      });
+
+      expect(urljson.decode('first=second:\\3.14')).to.deep.equal({
+        first: {
+          second: 3.14
+        }
+      });
+    });
+
   });
 
 
@@ -265,7 +259,11 @@ describe('UI State', function () {
     it('should convert json -> string -> json', function () {
       var obj;
 
-      obj = {first: '123'};
+      obj = {
+        x: '1234', y: 2345, z: {
+          a: 1234, b: 'string', c: null, d: '', e: false, f: true, g: undefined
+        }
+      };
       expect(urljson.decode(urljson.encode(obj))).to.deep.equal(obj);
     });
 
