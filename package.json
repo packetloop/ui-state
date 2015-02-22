@@ -6,11 +6,14 @@
   "scripts": {
     "test": "npm run lint && mocha test/",
     "lint": "jshint lib/**.js test/**.js",
-    "doc": "npm run cov && npm run cov:html && npm run doc:html && npm run doc:concat && rm doc/_content.html.part",
-    "cov": "jscoverage lib lib-cov --exclude .jshintrc",
+    "build": "npm test && npm run cov && npm run plato && npm run doc",
+    "doc": "npm run doc:html && npm run doc:concat && rm doc/_content.html.part",
+    "cov": "jscoverage lib lib-cov --exclude .jshintrc && npm run cov:html",
     "cov:html": "JS_COV=1 mocha -b --reporter=html-cov > doc/coverage.html",
     "doc:html": "mocha -b --reporter=doc > doc/_content.html.part",
-    "doc:concat": "cat doc/_header.html.part doc/_content.html.part doc/_footer.html.part > doc/index.html"
+    "doc:concat": "cat doc/_header.html.part doc/_content.html.part doc/_footer.html.part > doc/index.html",
+    "plato": "npm run plato:cleanup && plato --dir=doc/plato --jshint=lib/.jshintrc lib/**/*.js",
+    "plato:cleanup": "rm -rf doc/plato"
   },
   "repository": {
     "type": "git",
