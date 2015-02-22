@@ -12,3 +12,6 @@ and prepended with `\` (123 -> '\123').
 and prepended with `\` (false -> '\false').
 4. Objects with depth over 2 are not accepted, Error will be raised.
 
+## Tests
+
+[Tests and coverage](https://packetloop.github.io/ui-state/doc)

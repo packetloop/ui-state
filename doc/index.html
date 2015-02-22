@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mocha Docs</title>
+  <style>
+    body {
+      font: 16px/1.6 "Helvetica Neue", "Calibri", arial, sans-serif;
+      padding: 60px;
+    }
+    pre { font: 14px/1.3 "Consolas", monospace; }
+    code .init { color: #2F6FAD }
+    code .string { color: #5890AD }
+    code .keyword { color: #8A6343 }
+    code .number { color: #2F6FAD }
+  </style>
+</head>
+<body>
+<h1>Mocha Docs</h1>
+<p>The test suite documentation generated with the <a href="http://visionmedia.github.com/mocha">Mocha</a> test framework.</p>
+    <section class="suite">
+      <h1>UI State</h1>
+      <dl>
+        <section class="suite">
+          <h1>encode</h1>
+          <dl>
+            <dt>should convert 1st level to query params</dt>
+            <dd><pre><code>expect(urljson.encode({
+  first: 'string'
+})).to.equal('first=string');
+expect(urljson.encode({
+  x: '1', y: 2
+})).to.equal('x=1&amp;y=\\2');</code></pre></dd>
+            <dt>should handle \true</dt>
+            <dd><pre><code>expect(urljson.encode({
+  first: true
+})).to.equal('first=\\true');
+expect(urljson.encode({
+  first: {
+    second: true
+  }
+})).to.equal('first=second:\\true');</code></pre></dd>
+            <dt>should handle \false</dt>
+            <dd><pre><code>expect(urljson.encode({
+  first: false
+})).to.equal('first=\\false');
+expect(urljson.encode({
+  first: {
+    second: false
+  }
+})).to.equal('first=second:\\false');</code></pre></dd>
+            <dt>should handle empty string</dt>
+            <dd><pre><code>expect(urljson.encode({
+        first: ''
+      })).to.equal('first=');
+      expect(urljson.encode({
+        first: {
+          second: ''
+        }
+      })).to.equal('first=second:');</code></pre></dd>
+            <dt>should handle \null</dt>
+            <dd><pre><code>expect(urljson.encode({
+        first: null
+      })).to.equal('first=\\null');
+      expect(urljson.encode({
+        first: {
+          second: null
+        }
+      })).to.equal('first=second:\\null');</code></pre></dd>
+            <dt>should handle \undefined</dt>
+            <dd><pre><code>expect(urljson.encode({
+        first: undefined
+      })).to.equal('first=\\undefined');
+      expect(urljson.encode({
+        first: {
+          second: undefined
+        }
+      })).to.equal('first=second:\\undefined');</code></pre></dd>
+            <dt>should convert 2nd level to simplified json</dt>
+            <dd><pre><code>expect(urljson.encode({
+  first: {
+    second: 'string'
+  }
+})).to.equal('first=second:string');
+expect(urljson.encode({
+  first: {
+    x: '1', y: '2'
+  }
+})).to.equal('first=x:1,y:2');</code></pre></dd>
+            <dt>should throw on 3rd (and deeper) level</dt>
+            <dd><pre><code>expect(function () {
+  return urljson.encode({
+    first: {
+      second: {
+        third: 'string'
+      }
+    }
+  });
+}).to.throw('Maximum allowed object depth is 2');
+expect(function () {
+  return urljson.encode({
+    first: {
+      second: {
+        third: {
+          x: '1', y: '2'
+        }
+      }
+    }
+  });
+}).to.throw('Maximum allowed object depth is 2');</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>decode</h1>
+          <dl>
+            <dt>should convert 1st level to query params</dt>
+            <dd><pre><code>expect(urljson.decode('first=string')).to.deep.equal({
+  first: 'string'
+});
+expect(urljson.decode('x=1&amp;y=2')).to.deep.equal({
+  x: '1', y: '2'
+});</code></pre></dd>
+            <dt>should convert 2nd level to simplified json</dt>
+            <dd><pre><code>expect(urljson.decode('first=second:string')).to.deep.equal({
+  first: {
+    second: 'string'
+  }
+});
+expect(urljson.decode('first=x:1,y:2')).to.deep.equal({
+  first: {
+    x: '1', y: '2'
+  }
+});</code></pre></dd>
+            <dt>should handle \true</dt>
+            <dd><pre><code>expect(urljson.decode('first=\\true')).to.deep.equal({
+  first: true
+});
+expect(urljson.decode('first=second:\\true')).to.deep.equal({
+  first: {
+    second: true
+  }
+});</code></pre></dd>
+            <dt>should handle \false</dt>
+            <dd><pre><code>expect(urljson.decode('first=\\false')).to.deep.equal({
+  first: false
+});
+expect(urljson.decode('first=second:\\false')).to.deep.equal({
+  first: {
+    second: false
+  }
+});</code></pre></dd>
+            <dt>should handle empty string</dt>
+            <dd><pre><code>expect(urljson.decode('first=')).to.deep.equal({
+        first: ''
+      });
+      expect(urljson.decode('first=second:')).to.deep.equal({
+        first: {
+          second: ''
+        }
+      });</code></pre></dd>
+            <dt>should handle \null</dt>
+            <dd><pre><code>expect(urljson.decode('first=\\null')).to.deep.equal({
+  first: null
+});
+expect(urljson.decode('first=second:\\null')).to.deep.equal({
+  first: {
+    second: null
+  }
+});</code></pre></dd>
+            <dt>should handle \undefined</dt>
+            <dd><pre><code>expect(urljson.decode('first=\\undefined')).to.deep.equal({
+  first: undefined
+});
+expect(urljson.decode('first=second:\\undefined')).to.deep.equal({
+  first: {
+    second: undefined
+  }
+});</code></pre></dd>
+            <dt>should handle numbers</dt>
+            <dd><pre><code>expect(urljson.decode('first=\\1')).to.deep.equal({
+  first: 1
+});
+expect(urljson.decode('first=second:\\3.14')).to.deep.equal({
+  first: {
+    second: 3.14
+  }
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2-way conversions equality</h1>
+          <dl>
+            <dt>should convert string -&gt; json -&gt; string</dt>
+            <dd><pre><code>var query;
+query = 'first=second:\\undefined';
+expect(urljson.encode(urljson.decode(query))).to.equal(query);
+query = 'first1=second:\\false&amp;first2=x:1,y:2&amp;first3=second1:\\null,second2:';
+expect(urljson.encode(urljson.decode(query))).to.equal(query);</code></pre></dd>
+            <dt>should convert json -&gt; string -&gt; json</dt>
+            <dd><pre><code>var obj;
+obj = {
+  x: '1234', y: 2345, z: {
+    a: 1234, b: 'string', c: null, d: '', e: false, f: true, g: undefined
+  }
+};
+expect(urljson.decode(urljson.encode(obj))).to.deep.equal(obj);</code></pre></dd>
+          </dl>
+        </section>
+      </dl>
+    </section>
+
+<iframe src="./coverage.html" frameborder="0" style="width: 100%; min-height: 500px;"></iframe>
+
+<script>
+
+  (function (){
+    function highlight(js) {
+      return js
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\/\/(.*)/gm, '<span class="comment">//$1</span>')
+          .replace(/('.*')/gm, '<span class="string">$1</span>')
+          .replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
+          .replace(/(\d+)/gm, '<span class="number">$1</span>')
+          .replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
+          .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('code'), function($el) {
+      $el.innerHTML = highlight($el.innerHTML)
+    });
+  })();
+
+  (function (){
+    document.querySelector('iframe').addEventListener('load', function(event) {
+      event.target.style.height = event.target.contentWindow.document.body.scrollHeight + 'px';
+    });
+  })();
+
+</script>
+</body>
+</html>

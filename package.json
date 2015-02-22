@@ -4,8 +4,13 @@
   "description": "Conversion tool to transform UI state object to readable url query params and back.",
   "main": "index.js",
   "scripts": {
+    "test": "npm run lint && mocha test/",
     "lint": "jshint lib/**.js test/**.js",
-    "test": "npm run lint && mocha test/"
+    "doc": "npm run cov && npm run cov:html && npm run doc:html && npm run doc:concat && rm doc/_content.html.part",
+    "cov": "jscoverage lib lib-cov --exclude .jshintrc",
+    "cov:html": "JS_COV=1 mocha -b --reporter=html-cov > doc/coverage.html",
+    "doc:html": "mocha -b --reporter=doc > doc/_content.html.part",
+    "doc:concat": "cat doc/_header.html.part doc/_content.html.part doc/_footer.html.part > doc/index.html"
   },
   "repository": {
     "type": "git",
