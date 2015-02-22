@@ -1,0 +1,33 @@
+{
+  "name": "ui-state",
+  "version": "1.0.0",
+  "description": "Conversion tool to transform UI state object to readable url query params and back.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "jshint lib/**.js test/**.js",
+    "test": "npm run lint && mocha test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:packetloop/ui-state.git"
+  },
+  "keywords": [
+    "json",
+    "url",
+    "convert",
+    "querystring"
+  ],
+  "author": "Nik Butenko <nik@butenko.me> (http://butenko.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/packetloop/ui-state/issues"
+  },
+  "homepage": "https://github.com/packetloop/ui-state",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "jscoverage": "^0.5.9",
+    "jshint": "^2.6.0",
+    "mocha": "^2.1.0"
+  }
+}
